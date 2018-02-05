@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorCoral">#E14658</color>
+    <color name="colorNavy">#22252C</color>
+    <color name="colorMountain">#3F3250</color>
+    <color name="colorScrub">#C0B3A0</color>
+    <color name="colorOrange">#C06014</color>
+    <color name="colorPeach">#EDDBCD</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorCoolGrey">#CDCDCD</color>
+</resources>

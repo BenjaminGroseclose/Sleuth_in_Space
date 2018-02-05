@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorNavy"
+    tools:context="com.bengroseclose.sleuthinspace.SettingsPage">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorOrange"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        />
+
+    <TextView
+        android:id="@+id/textView_number_of_players"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_marginLeft="25dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="79dp"
+        android:text="# of Players"
+        android:textColor="@color/colorCoolGrey"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/textView_settings_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/my_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:text="Settings"
+        android:textSize="26dp"
+        android:textColor="@color/colorCoolGrey"/>
+
+    <TextView
+        android:id="@+id/textView_mode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/spinner_number_of_players"
+        android:layout_marginTop="38dp"
+        android:layout_toLeftOf="@+id/spinner_number_of_players"
+        android:layout_toStartOf="@+id/spinner_number_of_players"
+        android:text="Mode"
+        android:textColor="@color/colorCoolGrey"
+        android:textSize="20dp"/>
+
+    <Spinner
+        android:id="@+id/spinner_mode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView_mode"
+        android:layout_alignEnd="@+id/spinner_number_of_players"
+        android:layout_alignRight="@+id/spinner_number_of_players" />
+
+    <Spinner
+        android:id="@+id/spinner_number_of_players"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView_number_of_players"
+        android:layout_alignLeft="@+id/textView_settings_title"
+        android:layout_alignStart="@+id/textView_settings_title"
+        android:layout_marginRight="100dp"
+        android:textSize="20dp"/>
+
+    <TextView
+        android:id="@+id/textView_team_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/spinner_mode"
+        android:layout_toStartOf="@+id/spinner_mode"
+        android:text="Team Name:"
+        android:textColor="@color/colorCoolGrey"
+        android:textSize="20dp"/>
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/textView_team_name"
+        android:layout_toRightOf="@+id/textView_team_name"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Team Name"
+        android:textColor="@color/colorCoolGrey"
+        android:layout_marginLeft="55dp"/>
+
+</RelativeLayout>
