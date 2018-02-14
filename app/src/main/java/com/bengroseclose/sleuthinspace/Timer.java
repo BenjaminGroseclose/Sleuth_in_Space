@@ -3,7 +3,7 @@
         Description: This class will be called when start is select on the MainActivity page.
         This will use a count down timer to display a count down of the time left in the game
         In the onCreate method I will call the CountDownTimer constructor. I have a method called
-        determindSeconds that will be called within the creation of the CountDownTimer that will
+        determindTime that will be called within the creation of the CountDownTimer that will
         return different value of type long. This value will be base of information receive from
         SettingsPage.
  */
@@ -24,8 +24,10 @@ import android.widget.TextView;
 
 public class Timer extends AppCompatActivity {
 
-    private int part = 1;
-
+    final TextView textView_mainCountDown_Timer =
+            (TextView)findViewById(R.id.textView_countdown_timer);
+    final TextView textView_openingCountDown_Timer =
+            (TextView) findViewById(R.id.textView_opening_timer);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,38 +36,7 @@ public class Timer extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        final TextView textView_countdown_timer = (TextView)findViewById(R.id.textView_countdown_timer);
-        long countDownInterval = 1000;
-
-        //MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.collisionsound);
-       // mediaPlayer.start();
-
-        /*
-            This is the CountDownTimer, within it there is a onTick class that will display the new
-            time remaining in the game. Additionally this will call method that contain different
-            events that are set to occur at different times of the game.
-         */
-        new CountDownTimer(determindTime(), 1000) {
-
-
-            public void onTick(long millisUntilFinished) {
-                int totalSeconds = (int)millisUntilFinished / 1000;
-                int minutes = (totalSeconds / 60);
-                int seconds = (totalSeconds % 60);
-
-
-
-                if(totalSeconds == 60){
-                    // event occurs
-                }
-
-                textView_countdown_timer.setText(minutes + ":" + seconds);
-            }
-
-            public void onFinish() {
-                textView_countdown_timer.setText("Done!");
-            }
-        }.start();
+        opening();
 
     }
     /*
@@ -80,7 +51,7 @@ public class Timer extends AppCompatActivity {
 
     /*
         Allows the user to select on of the icons in the app bar and be moved to a different
-        activity.
+        activity. Will make calls, to each of the open<pagename>() methods.
     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -105,35 +76,102 @@ public class Timer extends AppCompatActivity {
         }
     }
 
-    // Used in onOptionItemSelect to call the SettingsPage
+    /*
+        Opens the Setting page
+     */
     void openSettingPage() {
         Intent intent = new Intent(this, SettingsPage.class);
         startActivity(intent);
     }
 
-    // Used in onOptionItemSelect to call the LeaderboardPage
+    /*
+        Opens the LeaderboardPage, 2/13/18 Leadersboard page is not developed yet.
+     */
     void openLeaderboardPage(){
         Intent intent = new Intent(this, Leaderboard.class);
         startActivity(intent);
     }
 
-    // Used in onOptionItemSelect to call the HomePage
+    /*
+        Opens the Home Page
+     */
     void openHomePage() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 
-    // This will take into consideration the items from the settings page somehow.
-    long determindTime(){
-        // This should also determine the starting voice from the 'Computer'
-        // facture in settings but for now returns 15 mins for part 1 then 20 mins in part 2
-        if(part == 1){
-            return 900000;
-        }
-        else{
-            return 1200000;
-        }
+    /*
+        Using data from the settings page, determine the started time based of parameters from
+        setting page. Should return only three different times.
+
+            Time 1:
+            Time 2:
+            Time 3:
+
+        Solution:
+     */
+    long determindTime()
+    {
+        return 1;
     }
 
+    /*
+        Overview: This is what will appear first on the screen when the user opens to the actual game. Will
+        start a count down from 5 seconds and once it finishes a "space ship crashing" sound
+        will fire. This will then file right into the start of the firstCountDown()
+
+        Solution: Will use a CountDownTimer that will start from 5 seconds and proceed toward 0.
+        Will also use the media player to, play the sound that can be found in the res/raw folder.
+     */
+    void opening()
+    {
+        final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.collisionsound);
+
+        new CountDownTimer(5000, 1000) {
+            @Override
+            public void onTick(long l) {
+                int totalseconds = (int)l / 1000;
+
+                /*
+                    Would like to add an animation to fade in and fade out.
+                    See AnimationListener and Android Documentation.
+                 */
+                textView_openingCountDown_Timer.setText(totalseconds);
+            }
+
+            @Override
+            public void onFinish() {
+                mediaPlayer.start();
+            }
+        }.start();
+    }
+
+    /*
+        Will be the countDown portion for the first part of the game. After this is finished will
+        fire the mid game portion and demand a player to attempt to solve.
+
+        Solution: First create a variable associated with the textView element on the screen.
+        Then create a new CountDownTimer, that has a duration based of what is returned from the
+        determineTime() method. Every tick will update the textView element and when finished will
+        exit.
+     */
+    void firstCountDown() {
+        long countDownInterval = 1000;
+
+        new CountDownTimer(6000000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int totalSeconds = (int) millisUntilFinished / 1000;
+                int minutes = (totalSeconds / 60);
+                int seconds = (totalSeconds % 60);
+
+                textView_mainCountDown_Timer.setText(minutes + ":" + seconds);
+            }
+
+            public void onFinish() {
+                textView_mainCountDown_Timer.setText("Times Up!");
+            }
+        }.start();
+    }
 }
 
