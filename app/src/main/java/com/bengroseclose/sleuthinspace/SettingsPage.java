@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,9 +30,9 @@ public class SettingsPage extends AppCompatActivity {
 
     int numberOfPlayers;
     String mode;
-    Spinner spinner_number_of_players = (Spinner) findViewById(R.id.spinner_number_of_players);
-    Spinner spinner_mode = (Spinner) findViewById(R.id.spinner_mode);
-    final Button button_startgame = (Button) findViewById(R.id.button_startgame);
+    Spinner spinner_number_of_players;
+    Spinner spinner_mode;
+    Button button_startgame;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,10 @@ public class SettingsPage extends AppCompatActivity {
         setContentView(R.layout.activity_settings_page);
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        spinner_number_of_players = (Spinner) findViewById(R.id.spinner_number_of_players);
+        spinner_mode = (Spinner) findViewById(R.id.spinner_mode);
+        button_startgame = (Button) findViewById(R.id.button_startgame);
 
         initPage();
 
@@ -59,13 +64,17 @@ public class SettingsPage extends AppCompatActivity {
     void startGame()
     {
 
-        numberOfPlayers = (int) spinner_number_of_players.getSelectedItem();
+        //int TYPE = Integer.parseInt(userInputSpinner.getSelectedItem().toString());
+        numberOfPlayers = Integer.parseInt(spinner_number_of_players.getSelectedItem().toString());
         mode = spinner_mode.getSelectedItem().toString();
 
-        Intent intent = new Intent(this, Game.class);
+        Log.d("mode", mode);
+        Log.d("number", String.valueOf(numberOfPlayers));
 
-        intent.putExtra(EXTRA_MODE, mode);
-        intent.putExtra(EXTRA_NUMBEROFPLAYERS, numberOfPlayers);
+        Intent intent = new Intent(SettingsPage.this, Game.class);
+
+        intent.putExtra("com.bengroseclose.sleuthinspace.mode", mode);
+        intent.putExtra("com.bengroseclose.sleuthinsapce.players", numberOfPlayers);
         startActivity(intent);
 
     }
@@ -118,7 +127,7 @@ public class SettingsPage extends AppCompatActivity {
     void initPage(){
 
         ArrayAdapter<CharSequence> adapter_number_of_players = ArrayAdapter.createFromResource(this,
-                R.array.mode_array, R.layout.spinner_item);
+                R.array.number_of_players_array, R.layout.spinner_item);
         adapter_number_of_players.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_number_of_players.setAdapter(adapter_number_of_players);
 

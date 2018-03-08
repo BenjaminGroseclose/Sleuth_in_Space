@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorNavy"
-    tools:context="com.bengroseclose.sleuthinspace.Timer">
+    tools:context="com.bengroseclose.sleuthinspace.Game">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
@@ -27,6 +27,16 @@
         android:text="00:00"
         android:textColor="@color/colorCoolGrey"
         android:textSize="55dp" />
+
+    <TextView
+        android:id="@+id/textView_opening_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="5"
+        android:textSize="120dp"
+        android:textColor="@color/colorCoolGrey"/>
 
 
 </RelativeLayout>

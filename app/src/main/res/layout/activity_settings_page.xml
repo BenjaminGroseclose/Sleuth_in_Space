@@ -24,12 +24,12 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/my_toolbar"
-        android:layout_marginLeft="25dp"
-        android:layout_marginStart="25dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="79dp"
-        android:text="# of Players"
+        android:text="# of Players:"
         android:textColor="@color/colorCoolGrey"
-        android:textSize="20dp" />
+        android:textSize="22dp" />
 
     <TextView
         android:id="@+id/textView_settings_title"
@@ -47,30 +47,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/spinner_number_of_players"
-        android:layout_marginTop="38dp"
-        android:layout_toLeftOf="@+id/spinner_number_of_players"
-        android:layout_toStartOf="@+id/spinner_number_of_players"
-        android:text="Mode"
+        android:layout_marginTop="50dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft ="65dp"
+        android:text="Mode:"
         android:textColor="@color/colorCoolGrey"
-        android:textSize="20dp"/>
+        android:textSize="22dp"/>
 
     <Spinner
         android:id="@+id/spinner_mode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView_mode"
-        android:layout_alignEnd="@+id/spinner_number_of_players"
-        android:layout_alignRight="@+id/spinner_number_of_players" />
+        android:layout_marginTop="216dp"
+        android:layout_alignLeft="@+id/spinner_number_of_players"
+        android:layout_alignStart="@+id/spinner_number_of_players"
+        android:layout_marginRight="80dp" />
 
     <Spinner
         android:id="@+id/spinner_number_of_players"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView_number_of_players"
-        android:layout_alignLeft="@+id/textView_settings_title"
-        android:layout_alignStart="@+id/textView_settings_title"
-        android:layout_marginRight="100dp"
-        android:textSize="20dp"/>
+        android:layout_marginLeft="142dp"
+        android:layout_marginTop="130dp"
+        android:textSize="20dp"
+        android:layout_marginRight="140dp" />
 
     <TextView
         android:id="@+id/textView_team_name"
@@ -79,21 +79,37 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@+id/spinner_mode"
         android:layout_toStartOf="@+id/spinner_mode"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="5dp"
         android:text="Team Name:"
         android:textColor="@color/colorCoolGrey"
-        android:textSize="20dp"/>
+        android:textSize="22dp"/>
 
     <EditText
         android:id="@+id/editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spinner_mode"
+        android:layout_alignRight="@+id/spinner_mode"
         android:layout_centerVertical="true"
         android:layout_toEndOf="@+id/textView_team_name"
         android:layout_toRightOf="@+id/textView_team_name"
         android:ems="10"
+        android:textSize="22dp"
         android:inputType="textPersonName"
         android:text="Team Name"
-        android:textColor="@color/colorCoolGrey"
-        android:layout_marginLeft="55dp"/>
+        android:textColor="@color/colorCoolGrey" />
+
+    <Button
+        android:id="@+id/button_startgame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
+        android:background="@drawable/round_button"
+        android:text="Start"
+        android:textColor="@color/colorNavy"
+        android:textSize="24dp" />
 
 </RelativeLayout>

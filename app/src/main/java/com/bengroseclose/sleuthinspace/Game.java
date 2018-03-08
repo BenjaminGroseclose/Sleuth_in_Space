@@ -13,6 +13,7 @@ package com.bengroseclose.sleuthinspace;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
+import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -22,12 +23,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class Timer extends AppCompatActivity {
+public class Game extends AppCompatActivity {
 
-    final TextView textView_mainCountDown_Timer =
-            (TextView)findViewById(R.id.textView_countdown_timer);
-    final TextView textView_openingCountDown_Timer =
-            (TextView) findViewById(R.id.textView_opening_timer);
+    String mode;
+    int numberOfPlayers;
+    int gameTime;
+    TextView textView_mainCountDown_Timer;
+    TextView textView_openingCountDown_Timer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,27 @@ public class Timer extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        textView_mainCountDown_Timer = (TextView)findViewById(R.id.textView_countdown_timer);
+        textView_openingCountDown_Timer = (TextView)findViewById(R.id.textView_opening_timer);
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
+        if(extras == null){
+            Log.d("Error:", "Extras return null. ");
+        }
+        else {
+             mode = extras.getString("com.bengroseclose.sleuthinspace.mode");
+             numberOfPlayers = extras.getInt("com.bengroseclose.sleuthinsapce.players");
+        }
+
+        gameTime = determindTime(mode, numberOfPlayers);
+
+        Log.d("Gametime:", String.valueOf(gameTime));
+
         opening();
+
+        firstCountDown(gameTime);
 
     }
     /*
@@ -101,18 +123,55 @@ public class Timer extends AppCompatActivity {
     }
 
     /*
-        Using data from the settings page, determine the started time based of parameters from
-        setting page. Should return only three different times.
+    Using data from the settings page, determine the started time based of parameters from
+    setting page. Should return only three different times.
 
-            Time 1:
-            Time 2:
-            Time 3:
+        Note: Need to speak with Jacob about how he wants this part to work.
 
-        Solution:
-     */
-    long determindTime()
+        Players     Hard     Medium     Easy
+            3       5/10      10/10     15/10
+            4       5/10      10/10     15/10
+            5       10/15     15/15     20/15
+            6       10/15     15/15     20/15
+            7       10/15     15/15     20/15
+
+    Solution: Using a if statement to determine the given players and then use and then use
+    a switch statement inside of that to return the given values. This will return an int.
+    The numbers return will be correspond to a different, value on the outside that will control
+    the flow. Chose this because there are only at max 6 different return values.
+ */
+    int determindTime(String mode, int numberOfPlayers)
     {
-        return 1;
+        int retval = 0;
+
+        if(numberOfPlayers <= 4){
+            switch(mode) {
+                case "Easy":
+                    retval = 1;
+                    break;
+                case "Mediun":
+                    retval = 2;
+                    break;
+                case "Hard":
+                    retval = 3;
+                    break;
+            }
+        }
+        else {
+            switch(mode) {
+                case "Easy":
+                    retval = 4;
+                    break;
+                case "Mediun":
+                    retval = 5;
+                    break;
+                case "Hard":
+                    retval = 6;
+                    break;
+            }
+        }
+
+        return retval;
     }
 
     /*
@@ -129,14 +188,15 @@ public class Timer extends AppCompatActivity {
 
         new CountDownTimer(5000, 1000) {
             @Override
-            public void onTick(long l) {
-                int totalseconds = (int)l / 1000;
-
+            public void onTick(long tick) {
+            int countDown = (int) tick / 1000;
                 /*
                     Would like to add an animation to fade in and fade out.
                     See AnimationListener and Android Documentation.
                  */
-                textView_openingCountDown_Timer.setText(totalseconds);
+
+                textView_openingCountDown_Timer.setText(String.valueOf(countDown));
+
             }
 
             @Override
@@ -155,7 +215,7 @@ public class Timer extends AppCompatActivity {
         determineTime() method. Every tick will update the textView element and when finished will
         exit.
      */
-    void firstCountDown() {
+    void firstCountDown(int time) {
         long countDownInterval = 1000;
 
         new CountDownTimer(6000000, 1000) {
@@ -172,6 +232,29 @@ public class Timer extends AppCompatActivity {
                 textView_mainCountDown_Timer.setText("Times Up!");
             }
         }.start();
+    }
+
+    void halftimeCountDown(){
+        new CountDownTimer(180000, 1000){
+            @Override
+            public void onTick(long l) {
+                /*
+                    CountDown Timer needs a textView or something to use it with.
+                */
+            }
+
+            @Override
+            public void onFinish() {
+                /*
+                resume the game and notify the players that it is beginning.
+                Also inform that that the communications have come back online.
+                 */
+            }
+        }.start();
+    }
+
+    void secondCountDown(int time) {
+
     }
 }
 

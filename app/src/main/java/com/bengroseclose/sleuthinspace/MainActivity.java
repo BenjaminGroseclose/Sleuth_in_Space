@@ -1,6 +1,5 @@
 package com.bengroseclose.sleuthinspace;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,7 +13,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public TextView textView_intro;
+    private TextView textView_intro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,13 +22,12 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-
-
+        textView_intro = (TextView)findViewById(R.id.textView_intro);
 
         final Button button_start = (Button) findViewById(R.id.button_start);
         button_start.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                openCountDownTimerPage();
+                openSettingPage();
             }
         });
 
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     //openLeaderboardPage();
                 return true;
             case R.id.action_home:
-
+                    openHomePage();
                 return true;
 
             default:
@@ -77,11 +75,6 @@ public class MainActivity extends AppCompatActivity {
 
     void openHomePage() {
         Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    void openCountDownTimerPage(){
-        Intent intent = new Intent(this, Timer.class);
         startActivity(intent);
     }
 
