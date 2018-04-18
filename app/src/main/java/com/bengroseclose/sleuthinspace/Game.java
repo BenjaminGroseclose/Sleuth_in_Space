@@ -13,7 +13,6 @@ package com.bengroseclose.sleuthinspace;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.CountDownTimer;
-import android.os.Debug;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -21,15 +20,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Game extends AppCompatActivity {
 
     String mode;
     int numberOfPlayers;
     int gameTime;
-    TextView textView_mainCountDown_Timer;
-    TextView textView_openingCountDown_Timer;
+    TextView textViewTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +38,7 @@ public class Game extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        textView_mainCountDown_Timer = (TextView)findViewById(R.id.textView_countdown_timer);
-        textView_openingCountDown_Timer = (TextView)findViewById(R.id.textView_opening_timer);
+        textViewTimer = (TextView)findViewById(R.id.textView_timer);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -48,17 +47,11 @@ public class Game extends AppCompatActivity {
             Log.d("Error:", "Extras return null. ");
         }
         else {
-             mode = extras.getString("com.bengroseclose.sleuthinspace.mode");
-             numberOfPlayers = extras.getInt("com.bengroseclose.sleuthinsapce.players");
+            mode = extras.getString("com.bengroseclose.sleuthinspace.mode");
+            numberOfPlayers = extras.getInt("com.bengroseclose.sleuthinsapce.players");
         }
 
-        gameTime = determindTime(mode, numberOfPlayers);
-
-        Log.d("Gametime:", String.valueOf(gameTime));
-
-        opening();
-
-        firstCountDown(gameTime);
+        beginTheGame();
 
     }
     /*
@@ -126,8 +119,6 @@ public class Game extends AppCompatActivity {
     Using data from the settings page, determine the started time based of parameters from
     setting page. Should return only three different times.
 
-        Note: Need to speak with Jacob about how he wants this part to work.
-
         Players     Hard     Medium     Easy
             3       5/10      10/10     15/10
             4       5/10      10/10     15/10
@@ -142,36 +133,30 @@ public class Game extends AppCompatActivity {
  */
     int determindTime(String mode, int numberOfPlayers)
     {
-        int retval = 0;
-
         if(numberOfPlayers <= 4){
             switch(mode) {
                 case "Easy":
-                    retval = 1;
-                    break;
+                    return 1;
                 case "Mediun":
-                    retval = 2;
-                    break;
+                    return 2;
                 case "Hard":
-                    retval = 3;
-                    break;
+                    return 3;
+                default:
+                    return -1;
             }
         }
         else {
             switch(mode) {
                 case "Easy":
-                    retval = 4;
-                    break;
+                    return 4;
                 case "Mediun":
-                    retval = 5;
-                    break;
+                    return 5;
                 case "Hard":
-                    retval = 6;
-                    break;
+                    return 6;
+                default:
+                    return -1;
             }
         }
-
-        return retval;
     }
 
     /*
@@ -182,9 +167,12 @@ public class Game extends AppCompatActivity {
         Solution: Will use a CountDownTimer that will start from 5 seconds and proceed toward 0.
         Will also use the media player to, play the sound that can be found in the res/raw folder.
      */
-    void opening()
+    void beginTheGame()
     {
-        final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.collisionsound);
+        //final MediaPlayer backgroundSound = MediaPlayer.create(this, R.raw.red_space);
+        final MediaPlayer collision = MediaPlayer.create(this, R.raw.collisionsound);
+
+        //backgroundSound.start();
 
         new CountDownTimer(5000, 1000) {
             @Override
@@ -194,14 +182,21 @@ public class Game extends AppCompatActivity {
                     Would like to add an animation to fade in and fade out.
                     See AnimationListener and Android Documentation.
                  */
-
-                textView_openingCountDown_Timer.setText(String.valueOf(countDown));
+                Log.d("Count Down Value:", String.valueOf(countDown));
+                textViewTimer.setText(String.valueOf(countDown));
 
             }
 
             @Override
             public void onFinish() {
-                mediaPlayer.start();
+                textViewTimer.setVisibility(View.INVISIBLE);
+                collision.start();
+
+                if((gameTime = determindTime(mode, numberOfPlayers)) < 0) {
+                    Toast.makeText(getBaseContext(), "determindTime function failed.", Toast.LENGTH_LONG).show();
+                    openHomePage();
+                }
+                firstCountDown(gameTime);
             }
         }.start();
     }
@@ -214,33 +209,78 @@ public class Game extends AppCompatActivity {
         Then create a new CountDownTimer, that has a duration based of what is returned from the
         determineTime() method. Every tick will update the textView element and when finished will
         exit.
-     */
-    void firstCountDown(int time) {
-        long countDownInterval = 1000;
 
-        new CountDownTimer(6000000, 1000) {
+        Time returns
+
+        1 = 15 mins
+        2 = 10 mins
+        3 = 5  mins
+        4 = 20 mins
+        5 = 15 mins
+        6 = 10 mins
+
+     */
+    void firstCountDown(final int time) {
+        long millsInFuture;
+
+        switch(time){
+            case 1:
+                millsInFuture = 900000;
+                break;
+            case 2:
+                millsInFuture = 600000;
+                break;
+            case 3:
+                millsInFuture = 300000;
+                break;
+            case 4:
+                millsInFuture = 1200000;
+                break;
+            case 5:
+                millsInFuture = 900000;
+                break;
+            case 6:
+                millsInFuture = 600000;
+                break;
+            default:
+                millsInFuture = 600000;
+                break;
+        }
+
+        /*
+            Time will be use to determine what the overall times should be set at.
+         */
+        textViewTimer.setVisibility(View.VISIBLE);
+
+
+        new CountDownTimer(millsInFuture, 1000) {
 
             public void onTick(long millisUntilFinished) {
                 int totalSeconds = (int) millisUntilFinished / 1000;
                 int minutes = (totalSeconds / 60);
                 int seconds = (totalSeconds % 60);
 
-                textView_mainCountDown_Timer.setText(minutes + ":" + seconds);
+                textViewTimer.setText(minutes + ":" + seconds);
             }
 
             public void onFinish() {
-                textView_mainCountDown_Timer.setText("Times Up!");
+                halftimeCountDown(time);
             }
         }.start();
     }
 
-    void halftimeCountDown(){
+    void halftimeCountDown(final int time){
+
+        //final MediaPlayer halfTimeAudio = MediaPlayer.create(this, R.raw.collisionsound);
+        //halfTimeAudio.start();
         new CountDownTimer(180000, 1000){
             @Override
             public void onTick(long l) {
-                /*
-                    CountDown Timer needs a textView or something to use it with.
-                */
+                int totalSeconds = (int) l / 1000;
+                int minutes = (totalSeconds / 60);
+                int seconds = (totalSeconds % 60);
+
+                textViewTimer.setText(minutes + ":" + seconds);
             }
 
             @Override
@@ -249,12 +289,46 @@ public class Game extends AppCompatActivity {
                 resume the game and notify the players that it is beginning.
                 Also inform that that the communications have come back online.
                  */
+                secondCountDown(time);
             }
         }.start();
     }
 
+    /*
+
+        Since in the second countDown Timer, there are only two options, either 10 mins or
+        15 mins, that is divided by whether are there are 4 or less players, 10 mins is set.
+        Otherwise, it will be set to 15 mins. The time value is translated to less than 3 means
+        that there are 4 anything else is greater than 4 making the value to be 15 mins.
+
+    */
     void secondCountDown(int time) {
+        long millsInFuture;
+
+        if(time <= 3){
+            millsInFuture = 600000;
+        }
+        else
+        {
+            millsInFuture = 900000;
+        }
+
+        new CountDownTimer(millsInFuture, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                int totalSeconds = (int) millisUntilFinished / 1000;
+                int minutes = (totalSeconds / 60);
+                int seconds = (totalSeconds % 60);
+
+                textViewTimer.setText(minutes + ":" + seconds);
+            }
+
+            public void onFinish() {
+                textViewTimer.setText("Game Over");
+            }
+        }.start();
 
     }
 }
+
 
