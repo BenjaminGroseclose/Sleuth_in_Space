@@ -133,30 +133,36 @@ public class Game extends AppCompatActivity {
  */
     int determindTime(String mode, int numberOfPlayers)
     {
-        if(numberOfPlayers <= 4){
+        int retval = -1;
+
+        if(numberOfPlayers <= 4) {
             switch(mode) {
                 case "Easy":
-                    return 1;
+                    retval = 1;
+                    break;
                 case "Mediun":
-                    return 2;
+                    retval = 2;
+                    break;
                 case "Hard":
-                    return 3;
-                default:
-                    return -1;
+                    retval = 3;
+                    break;
             }
         }
-        else {
+        if(numberOfPlayers > 4) {
             switch(mode) {
                 case "Easy":
-                    return 4;
+                    retval = 4;
+                    break;
                 case "Mediun":
-                    return 5;
+                    retval = 5;
+                    break;
                 case "Hard":
-                    return 6;
-                default:
-                    return -1;
+                    retval = 6;
+                    break;
             }
         }
+
+        return retval;
     }
 
     /*
@@ -189,13 +195,13 @@ public class Game extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                textViewTimer.setVisibility(View.INVISIBLE);
-                collision.start();
-
                 if((gameTime = determindTime(mode, numberOfPlayers)) < 0) {
+                    Log.d("gameTime:", String.valueOf(gameTime));
                     Toast.makeText(getBaseContext(), "determindTime function failed.", Toast.LENGTH_LONG).show();
                     openHomePage();
                 }
+                textViewTimer.setVisibility(View.INVISIBLE);
+                collision.start();
                 firstCountDown(gameTime);
             }
         }.start();
